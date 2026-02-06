@@ -1,0 +1,121 @@
+:root {
+  --ink: #f1f7ff;
+  --muted: #a6c5ee;
+  --panel: rgba(8, 20, 47, 0.75);
+  --line: rgba(131, 186, 255, 0.42);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: "Avenir Next", "Trebuchet MS", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 12% 18%, rgba(70, 116, 211, 0.33), transparent 45%),
+    radial-gradient(circle at 88% 22%, rgba(89, 198, 220, 0.24), transparent 42%),
+    linear-gradient(180deg, #020916 0%, #04112b 50%, #020815 100%);
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px;
+}
+
+.app-shell {
+  width: min(1280px, 100%);
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: clamp(1.3rem, 2vw, 2rem);
+  letter-spacing: 0.02em;
+}
+
+.topbar p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.stage-wrap {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: 0 28px 74px rgba(0, 0, 0, 0.45);
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #0a1638;
+}
+
+.menu {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2, 10, 22, 0.58);
+}
+
+.menu.hidden {
+  display: none;
+}
+
+.menu-card {
+  width: min(460px, 92%);
+  padding: 24px;
+  text-align: center;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: linear-gradient(160deg, rgba(19, 49, 97, 0.93), rgba(8, 18, 42, 0.95));
+}
+
+.menu-card h2 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.menu-card p {
+  color: #bfd8ff;
+  line-height: 1.45;
+}
+
+button {
+  border: 0;
+  border-radius: 9px;
+  padding: 11px 20px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #001522;
+  background: linear-gradient(120deg, #57d3ff, #64f1bc);
+}
+
+button:hover {
+  filter: brightness(1.06);
+}
+
+@media (max-width: 780px) {
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}

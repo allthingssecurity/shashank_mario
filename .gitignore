@@ -1,0 +1,6 @@
+.DS_Store
+tmp/
+output/web-game/
+output/web-game-*/
+output/web-game-platformer/
+output/web-game-jumpcheck/

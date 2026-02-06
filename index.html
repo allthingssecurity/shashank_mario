@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skyline Run</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <h1>Skyline Run</h1>
+        <p>Arrow keys move, Space jump, F fullscreen</p>
+      </header>
+      <section class="stage-wrap">
+        <canvas id="game" width="1280" height="720" aria-label="Skyline Run game"></canvas>
+        <div id="menu" class="menu">
+          <div class="menu-card">
+            <h2>Skyline Run</h2>
+            <p>Professional platformer starring your character. Clear all three stages.</p>
+            <button id="start-btn">Start Game</button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="game.js"></script>
+  </body>
+</html>
