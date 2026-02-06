@@ -1,0 +1,168 @@
+:root {
+  --bg0: #020815;
+  --bg1: #061633;
+  --ink: #eef6ff;
+  --muted: #a8c7f1;
+  --line: rgba(131, 186, 255, 0.42);
+  --panel: rgba(8, 18, 42, 0.72);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  font-family: "Avenir Next", "Trebuchet MS", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 20% 18%, rgba(76, 151, 255, 0.28), transparent 44%),
+    radial-gradient(circle at 85% 20%, rgba(100, 255, 206, 0.18), transparent 40%),
+    linear-gradient(180deg, var(--bg1), var(--bg0));
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px;
+}
+
+.app { width: min(1280px, 100%); }
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.top h1 {
+  margin: 0;
+  font-size: clamp(1.25rem, 2vw, 2rem);
+  letter-spacing: 0.02em;
+}
+
+.top p { margin: 0; color: var(--muted); }
+
+.nav { display: flex; gap: 10px; }
+
+.navlink {
+  color: var(--ink);
+  text-decoration: none;
+  border: 1px solid var(--line);
+  background: rgba(8, 18, 42, 0.35);
+  padding: 8px 12px;
+  border-radius: 999px;
+}
+
+.stage {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: 0 28px 74px rgba(0,0,0,0.45);
+  touch-action: none;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #07142e;
+  touch-action: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2, 10, 22, 0.58);
+}
+
+.overlay.hidden { display: none; }
+
+.card {
+  width: min(520px, 92%);
+  padding: 22px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: linear-gradient(160deg, rgba(19, 49, 97, 0.93), rgba(8, 18, 42, 0.95));
+}
+
+.card h2 { margin: 0 0 12px; font-size: 1.8rem; }
+
+.choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-weight: 800;
+  cursor: pointer;
+  color: #001522;
+  background: linear-gradient(120deg, #57d3ff, #64f1bc);
+}
+
+button.choice {
+  background: linear-gradient(145deg, rgba(12, 34, 74, 0.78), rgba(5, 19, 44, 0.8));
+  color: #dff0ff;
+  border: 1px solid rgba(255,255,255,0.22);
+}
+
+button.choice.selected {
+  outline: 2px solid rgba(100, 255, 206, 0.95);
+  box-shadow: 0 0 0 4px rgba(100, 255, 206, 0.18);
+}
+
+.start { width: 100%; }
+
+.hint { margin: 12px 0 0; color: #bfd8ff; }
+
+.touch {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  gap: 10px;
+  padding: 10px 12px calc(12px + env(safe-area-inset-bottom));
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(2, 10, 24, 0.0) 0%, rgba(2, 10, 24, 0.55) 18%, rgba(2, 10, 24, 0.92) 100%);
+}
+
+.pad {
+  pointer-events: auto;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(9, 22, 48, 0.72);
+  color: #e8f4ff;
+  font-weight: 900;
+}
+
+.pad:active {
+  transform: scale(0.97);
+  filter: brightness(1.08);
+}
+
+@media (max-width: 860px) {
+  .choices { grid-template-columns: 1fr; }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  body { padding: 0; }
+  .app { width: 100%; }
+  .top { padding: 10px 12px 8px; }
+  .stage { border-radius: 0; height: 100svh; width: 100vw; border-left: 0; border-right: 0; }
+  canvas { height: 100svh; }
+  .touch { display: flex; }
+}
