@@ -57,6 +57,7 @@ body {
   overflow: hidden;
   border: 1px solid var(--line);
   box-shadow: 0 28px 74px rgba(0, 0, 0, 0.45);
+  touch-action: none;
 }
 
 canvas {
@@ -64,6 +65,7 @@ canvas {
   width: 100%;
   height: auto;
   background: #0a1638;
+  touch-action: none;
 }
 
 .menu {
@@ -112,10 +114,66 @@ button:hover {
   filter: brightness(1.06);
 }
 
+.touch-controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 12px;
+  pointer-events: none;
+}
+
+.touch-move {
+  display: flex;
+  gap: 10px;
+}
+
+.touch-btn {
+  pointer-events: auto;
+  width: 68px;
+  height: 68px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: linear-gradient(145deg, rgba(12, 34, 74, 0.78), rgba(5, 19, 44, 0.8));
+  color: #dff0ff;
+  font-size: 1.45rem;
+  font-weight: 800;
+  backdrop-filter: blur(4px);
+}
+
+.touch-jump {
+  width: 96px;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+}
+
+.touch-btn:active {
+  transform: scale(0.96);
+  filter: brightness(1.12);
+}
+
 @media (max-width: 780px) {
   .topbar {
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
+  }
+
+  .menu-card {
+    width: min(92vw, 420px);
+    padding: 18px;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .touch-controls {
+    display: flex;
+  }
+
+  .topbar p {
+    font-size: 0.82rem;
   }
 }

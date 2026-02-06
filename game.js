@@ -4,6 +4,9 @@
   const menu = document.getElementById('menu');
   const startBtn = document.getElementById('start-btn');
   const stageWrap = document.querySelector('.stage-wrap');
+  const touchLeftBtn = document.getElementById('touch-left');
+  const touchRightBtn = document.getElementById('touch-right');
+  const touchJumpBtn = document.getElementById('touch-jump');
 
   const TILE = 64;
   const GRAVITY = 2100;
@@ -623,22 +626,23 @@
   }
 
   function drawHud() {
+    const compact = canvas.width <= 900;
     const coinsTaken = state.coins.filter((c) => c.taken).length;
     const coinsTotal = state.coins.length;
     const enemiesLeft = state.enemies.filter((e) => e.alive).length;
 
     ctx.fillStyle = 'rgba(8, 18, 36, 0.62)';
-    ctx.fillRect(16, 16, 470, 126);
+    ctx.fillRect(16, 16, compact ? 410 : 470, compact ? 112 : 126);
 
     ctx.fillStyle = '#eef5ff';
-    ctx.font = '700 30px "Avenir Next", sans-serif';
+    ctx.font = compact ? '700 24px "Avenir Next", sans-serif' : '700 30px "Avenir Next", sans-serif';
     ctx.fillText('Skyline Run', 28, 48);
 
-    ctx.font = '600 21px "Avenir Next", sans-serif';
+    ctx.font = compact ? '600 18px "Avenir Next", sans-serif' : '600 21px "Avenir Next", sans-serif';
     ctx.fillStyle = '#d5e7ff';
     ctx.fillText(`Level ${state.levelIndex + 1}: ${state.level.name}`, 28, 75);
 
-    ctx.font = '600 20px "Avenir Next", sans-serif';
+    ctx.font = compact ? '600 17px "Avenir Next", sans-serif' : '600 20px "Avenir Next", sans-serif';
     ctx.fillStyle = '#b7d7ff';
     ctx.fillText(
       `Lives ${state.lives}   Coins ${coinsTaken}/${coinsTotal}   Enemies ${enemiesLeft}   Score ${state.score}`,
@@ -648,10 +652,11 @@
     const allEnemiesCleared = !state.enemies.some((e) => e.alive);
     const allCoinsCleared = !state.coins.some((c) => !c.taken);
     ctx.fillStyle = allEnemiesCleared && allCoinsCleared ? '#7bffcb' : '#ffd77e';
+    ctx.font = compact ? '700 14px "Avenir Next", sans-serif' : '600 20px "Avenir Next", sans-serif';
     ctx.fillText(
       allEnemiesCleared && allCoinsCleared ? 'Full clear bonus active: +700 at flag' : 'Reach flag to clear level. Full clear gives bigger bonus.',
       28,
-      126
+      compact ? 122 : 126
     );
 
     if (state.particleFlash > 0) {
@@ -723,6 +728,24 @@
       canvas.style.height = 'auto';
     }
     render();
+  }
+
+  function bindTouchControl(button, code, setJump) {
+    if (!button) return;
+    const down = (e) => {
+      e.preventDefault();
+      input.pressed.add(code);
+      if (setJump) input.jumpQueued = true;
+    };
+    const up = (e) => {
+      e.preventDefault();
+      input.pressed.delete(code);
+    };
+
+    button.addEventListener('pointerdown', down, { passive: false });
+    button.addEventListener('pointerup', up, { passive: false });
+    button.addEventListener('pointercancel', up, { passive: false });
+    button.addEventListener('pointerleave', up, { passive: false });
   }
 
   function updateMenu() {
@@ -885,6 +908,10 @@
     if (state.mode === 'playing') return;
     startGame();
   });
+
+  bindTouchControl(touchLeftBtn, 'ArrowLeft', false);
+  bindTouchControl(touchRightBtn, 'ArrowRight', false);
+  bindTouchControl(touchJumpBtn, 'Space', true);
 
   resizeCanvas();
   updateMenu();
