@@ -162,10 +162,6 @@ button:hover {
 }
 
 @media (hover: none) and (pointer: coarse) {
-  :root {
-    --touchbar-h: 118px;
-  }
-
   body {
     padding: 0;
   }
@@ -175,7 +171,7 @@ button:hover {
   }
 
   .topbar {
-    padding: 10px 12px 8px;
+    display: none;
   }
 
   .stage-wrap {
@@ -187,18 +183,20 @@ button:hover {
   }
 
   canvas {
-    height: calc(100svh - var(--touchbar-h));
+    height: 100svh;
   }
 
   .touch-controls {
     display: flex;
-    position: relative;
-    height: var(--touchbar-h);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 14px calc(12px + env(safe-area-inset-bottom));
-    background: linear-gradient(180deg, rgba(2, 10, 24, 0.0) 0%, rgba(2, 10, 24, 0.55) 18%, rgba(2, 10, 24, 0.92) 100%);
+    padding: calc(10px + env(safe-area-inset-top)) 14px 10px;
+    background: linear-gradient(180deg, rgba(2, 10, 24, 0.9) 0%, rgba(2, 10, 24, 0.55) 48%, rgba(2, 10, 24, 0.0) 100%);
   }
 
   .topbar p {
@@ -206,13 +204,13 @@ button:hover {
   }
 
   .touch-btn {
-    width: 64px;
-    height: 64px;
+    width: 58px;
+    height: 58px;
   }
 
   .touch-jump {
-    width: 112px;
-    height: 70px;
+    width: 104px;
+    height: 58px;
     border-radius: 999px;
   }
 }
