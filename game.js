@@ -716,17 +716,25 @@
   }
 
   function resizeCanvas() {
+    const coarse = window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches;
     if (document.fullscreenElement === stageWrap) {
-      canvas.width = Math.max(960, Math.floor(window.innerWidth));
-      canvas.height = Math.max(540, Math.floor(window.innerHeight));
-      canvas.style.width = `${canvas.width}px`;
-      canvas.style.height = `${canvas.height}px`;
+      canvas.style.width = `${Math.floor(window.innerWidth)}px`;
+      canvas.style.height = `${Math.floor(window.innerHeight)}px`;
+    } else if (coarse) {
+      // CSS drives the layout on mobile; we just sync the backing store to the rendered size.
+      canvas.style.width = '100%';
+      canvas.style.height = '';
     } else {
-      canvas.width = 1280;
-      canvas.height = 720;
       canvas.style.width = '100%';
       canvas.style.height = 'auto';
     }
+
+    // Sync internal resolution to the actual CSS pixel size (keep game coordinates stable).
+    const rect = canvas.getBoundingClientRect();
+    const w = Math.max(320, Math.floor(rect.width));
+    const h = Math.max(240, Math.floor(rect.height));
+    canvas.width = w;
+    canvas.height = h;
     render();
   }
 
@@ -775,6 +783,10 @@
 
   function startGame() {
     ensureAudio();
+    const coarse = window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    if (coarse && document.fullscreenElement !== stageWrap && stageWrap.requestFullscreen) {
+      stageWrap.requestFullscreen().catch(() => {});
+    }
     state.score = 0;
     state.lives = 3;
     loadLevel(0, true);
