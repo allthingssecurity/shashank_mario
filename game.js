@@ -8,7 +8,7 @@
   const TILE = 64;
   const GRAVITY = 2100;
   const PLAYER_SPEED = 360;
-  const PLAYER_JUMP = 1040;
+  const PLAYER_JUMP = 1160;
   const FIXED_DT = 1 / 60;
 
   const assets = {
@@ -30,13 +30,13 @@
         '................................................................',
         '................................................................',
         '................................................................',
-        '.........................................................G......',
+        '................................................................',
         '...........................................###..................',
         '...............................C................................',
         '.....................####......................F................',
         '.........C...........................................###....B...',
         '....S...........#####..........E................................',
-        '..######....................................C...................',
+        '..######....................................C...............G...',
         '.....................#######..............................C......',
         '################################################################'
       ]
@@ -47,13 +47,13 @@
         '................................................................',
         '................................................................',
         '................................................................',
-        '..........................................................G.....',
+        '................................................................',
         '..............................................###...............',
         '............................C............................F......',
         '..............#####.....................E...........B...........',
         '.................................####...............C............',
         '..S............E..........................####...................',
-        '..######...................C.....................................',
+        '..######...................C................................G....',
         '..................#######.....................E..........B...C...',
         '################################################################'
       ]
@@ -64,13 +64,13 @@
         '................................................................',
         '................................................................',
         '................................................................',
-        '............................................................G.F.',
+        '................................................................',
         '.........................................###..............B.....',
         '......................C.........................................',
-        '.............####...................E.............F....####.....',
+        '.............####...................E..................####.....',
         '...............................................C...........B....',
-        '..S.........E.........####.....E..............................F..',
-        '..######.........................#####......................C....',
+        '..S.........E.........####.....E...............................F.',
+        '..######.........................#####..................G...C....',
         '......................#######.....................E.......B......',
         '################################################################'
       ]
@@ -237,7 +237,7 @@
       worldW: w * TILE,
       worldH: h * TILE,
       spawn,
-      goalUnlocked: false,
+      goalUnlocked: true,
     };
   }
 
@@ -339,7 +339,9 @@
     if (state.mode !== 'playing') return;
     state.mode = 'level_clear';
     state.levelClearTimer = 1.25;
-    state.score += 500;
+    const allEnemiesCleared = !state.enemies.some((e) => e.alive);
+    const allCoinsCleared = !state.coins.some((c) => !c.taken);
+    state.score += allEnemiesCleared && allCoinsCleared ? 700 : 300;
     sfxLevelClear();
   }
 
@@ -447,11 +449,7 @@
       }
     }
 
-    const enemiesRemaining = state.enemies.some((e) => e.alive);
-    const coinsRemaining = state.coins.some((c) => !c.taken);
-    state.level.goalUnlocked = !enemiesRemaining && !coinsRemaining;
-
-    if (state.level.goalUnlocked && aabb(p, state.level.goal)) {
+    if (aabb(p, state.level.goal)) {
       beginLevelClear();
     }
   }
@@ -537,21 +535,15 @@
     ctx.fillStyle = '#c6d6f2';
     ctx.fillRect(gx - 3, goal.y + goal.h - 10, 13, 10);
     const flutter = Math.sin(state.elapsed * 7) * 4;
-    ctx.fillStyle = state.level.goalUnlocked ? '#56f0a9' : '#e7c56d';
+    ctx.fillStyle = '#56f0a9';
     ctx.beginPath();
     ctx.moveTo(gx + 7, goal.y + 12);
     ctx.lineTo(gx + 54 + flutter, goal.y + 26);
     ctx.lineTo(gx + 7, goal.y + 40);
     ctx.closePath();
     ctx.fill();
-    if (!state.level.goalUnlocked) {
-      ctx.fillStyle = 'rgba(11, 20, 44, 0.55)';
-      ctx.fillRect(gx + 12, goal.y + goal.h - 48, 36, 48);
-      ctx.strokeStyle = '#ffd870';
-      ctx.strokeRect(gx + 12.5, goal.y + goal.h - 47.5, 35, 47);
-      ctx.fillStyle = '#ffd870';
-      ctx.fillRect(gx + 28, goal.y + goal.h - 36, 4, 12);
-    }
+    ctx.fillStyle = 'rgba(90, 255, 190, 0.2)';
+    ctx.fillRect(gx - 14, goal.y + goal.h - 58, 66, 58);
 
     for (const coin of state.coins) {
       if (coin.taken) continue;
@@ -653,8 +645,14 @@
       28,
       102
     );
-    ctx.fillStyle = state.level.goalUnlocked ? '#7bffcb' : '#ffd77e';
-    ctx.fillText(state.level.goalUnlocked ? 'Flag unlocked: reach it to clear level' : 'Clear all coins + enemies to unlock flag', 28, 126);
+    const allEnemiesCleared = !state.enemies.some((e) => e.alive);
+    const allCoinsCleared = !state.coins.some((c) => !c.taken);
+    ctx.fillStyle = allEnemiesCleared && allCoinsCleared ? '#7bffcb' : '#ffd77e';
+    ctx.fillText(
+      allEnemiesCleared && allCoinsCleared ? 'Full clear bonus active: +700 at flag' : 'Reach flag to clear level. Full clear gives bigger bonus.',
+      28,
+      126
+    );
 
     if (state.particleFlash > 0) {
       ctx.fillStyle = `rgba(255, 230, 120, ${state.particleFlash * 2.5})`;
@@ -821,7 +819,7 @@
       goal: state.level
         ? { x: Number(state.level.goal.x.toFixed(1)), y: Number(state.level.goal.y.toFixed(1)) }
         : null,
-      goal_unlocked: state.level ? state.level.goalUnlocked : false,
+      goal_unlocked: true,
       level_clear_timer: Number(state.levelClearTimer.toFixed(2)),
       enemies,
       enemies_remaining: enemies.length,
