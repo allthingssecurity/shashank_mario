@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BlockQuest: Skyline Story</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="top">
+        <div>
+          <h1>BlockQuest: Skyline Story</h1>
+          <p>WASD/Arrows move, E talk, F fullscreen</p>
+        </div>
+        <nav class="nav">
+          <a class="navlink" href="/">Platformer</a>
+          <a class="navlink" href="/music/">Studio</a>
+        </nav>
+      </header>
+
+      <section class="stage-wrap">
+        <canvas id="game" width="1280" height="720" aria-label="BlockQuest Game"></canvas>
+
+        <div id="menu" class="menu">
+          <div class="card">
+            <h2>BlockQuest</h2>
+            <p>A Roblox-like story quest starring your hero. Find 3 crystals and unlock the gate.</p>
+            <button id="start-btn">Start Quest</button>
+          </div>
+        </div>
+
+        <div id="touch" class="touch" aria-hidden="true">
+          <div class="touch-move">
+            <button id="touch-left" class="touch-btn" type="button">◀</button>
+            <button id="touch-right" class="touch-btn" type="button">▶</button>
+          </div>
+          <button id="touch-up" class="touch-btn" type="button">▲</button>
+          <button id="touch-down" class="touch-btn" type="button">▼</button>
+          <button id="touch-interact" class="touch-btn touch-action" type="button">TALK</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="game.js"></script>
+  </body>
+</html>
